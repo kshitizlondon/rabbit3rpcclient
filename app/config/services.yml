@@ -1,0 +1,18 @@
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+
+services:
+    hello_rabbitmq_service:
+        class: AppBundle\Consumer\HelloRabbitmqConsumer
+
+    server_integer_producer_service:
+        class: AppBundle\Producer\RandomIntegerServer
+        arguments: ["@logger"]
+
+    activity_logger_system:
+        class: AppBundle\Producer\ActivityLoggerSystem
+        arguments: ["@old_sound_rabbit_mq.hello_rabbitmq1_producer"]
+
+    random_integer_rpc_server:
+        class: AppBundle\Rpc\RandomIntegerRpc
+        arguments: ["@activity_logger_system"]
